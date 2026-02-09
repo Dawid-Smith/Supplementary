@@ -1,1 +1,5 @@
-
+{
+  "environment": { "value": "staging" },
+  "sqlAdmin": { "value": "quickshopadmin" },
+  "sqlPassword": { "value": "StagingPass123!" }
+}
