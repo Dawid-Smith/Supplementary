@@ -1,1 +1,5 @@
-
+{
+  "environment": { "value": "prod" },
+  "sqlAdmin": { "value": "quickshopadmin" },
+  "sqlPassword": { "value": "ProdPass456!" }
+}
