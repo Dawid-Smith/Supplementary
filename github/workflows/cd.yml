@@ -1,1 +1,34 @@
+name: CD
 
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Blue Slot
+        run: |
+          az webapp deployment source config-zip \
+            --resource-group quickshop-rg \
+            --name quickshop-api-prod \
+            --slot blue \
+            --src api.zip
+
+      - name: Smoke Test
+        run: curl -f https://quickshop-api-blue.azurewebsites.net/health
+
+      - name: Swap Slots if Healthy
+        run: |
+          az webapp deployment slot swap \
+            --resource-group quickshop-rg \
+            --name quickshop-api-prod \
+            --slot blue \
+            --target-slot production
